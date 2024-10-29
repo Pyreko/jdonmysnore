@@ -1,21 +1,25 @@
 @tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 #wrapper {
-    width: 100vw;
-    height: 100vh;
+    width: 100dvw;
+    height: 100dvh;
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
+    overflow-y: auto;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 #main {
+    padding-top: 10px;
+    padding-bottom: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    text-align: center;
+    overflow: visible;
     flex-grow: 1;
 }
 
@@ -36,9 +40,6 @@ p {
 
 #footer {
     text-align: center;
-    flex-shrink: 1;
-    justify-self: end;
-    margin-bottom: 6px;
 }
 
 #footer {
@@ -47,6 +48,17 @@ p {
         margin-top: 1px;
         margin-bottom: 1px;
     }
+}
+
+#sorry {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.tiny {
+    font-size: xx-small;
 }
 
 a {

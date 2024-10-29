@@ -7,4 +7,4 @@ watch = ["src/", "Cargo.toml", "Cargo.lock", "index.html", "css/", "tailwind.con
 [[hooks]]
 stage = "pre_build"
 command = "tailwindcss"
-command_arguments = ["-i", "./css/styles.css", "-o", "./css/tailwind.css", "-m"]
+command_arguments = ["-i", "./css/styles.css", "-o", "./css/tailwind.css", "--minify"]

@@ -85,15 +85,9 @@ fn Application() -> impl IntoView {
     view! {
         <div id="wrapper">
             <div id="main">
-                <p class="normal"> "It has been about" </p>
-                <div id="time">
-                   <p>
-                   {time}
-                   </p>
-                </div>
-                <p class="normal">
-                    "since Bae last overslept"
-                </p>
+                <p class="normal">"It has been about"</p>
+                <p id="time">{time}</p>
+                <p class="normal">"since Bae last overslept"</p>
             </div>
             <div id="footer">
                 <p>
@@ -101,7 +95,10 @@ fn Application() -> impl IntoView {
                     <a href="https://github.com/Pyreko/jdonmysnore" target="_blank" rel="noopener noreferrer">"on GitHub"</a>
                     "."
                 </p>
-                <p>"This is all just meant in good fun! ❤️"</p>
+                <span id="sorry">
+                    <p>"This is all meant in good fun, love you Bae! ❤️"</p>
+                    <p class="tiny">sorry</p>
+                </span>
             </div>
         </div>
     }
