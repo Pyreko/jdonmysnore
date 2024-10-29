@@ -1,5 +1,7 @@
 [build]
 public_url = "/"
+minify = "on_release"
+
 
 [watch]
 watch = ["src/", "Cargo.toml", "Cargo.lock", "index.html", "css/", "tailwind.config.js"]
