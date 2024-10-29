@@ -24,17 +24,13 @@ p {
 }
 
 .normal {
-    font-size: 2rem;
+    font-size: 2.5rem;
     margin: 0.5rem;
 }
 
 #time {
     font-size: 5rem;
     margin: 0.5rem;
-}
-
-.subtitle {
-    font-size: larger;
     text-align: center;
 }
 

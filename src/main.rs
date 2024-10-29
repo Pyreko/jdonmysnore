@@ -13,23 +13,59 @@ fn main() {
     leptos::mount_to_body(|| view! { <Application/> })
 }
 
-fn get_sleep() -> String {
-    let last_sleep = LAST_SLEEP.expect("work");
+macro_rules! pluralize {
+    ($amount:expr, $word:literal) => {{
+        let val = $amount;
+        let word = $word;
+        if val == 1 {
+            format!("{val} {word}")
+        } else {
+            format!("{val} {word}s")
+        }
+    }};
+}
+
+fn get_sleep(last_sleep: DateTime<Utc>) -> String {
     let now = Local::now().to_utc();
 
     let diff = now.signed_duration_since(last_sleep);
     let days = diff.num_days();
     let hours = diff.num_hours() - days * 24;
-    let minutes = diff.num_minutes() - hours * 60;
-    let seconds = diff.num_seconds() - minutes * 60;
+    let minutes = diff.num_minutes() - hours * 60 - days * 24 * 60;
+    let seconds = diff.num_seconds() - minutes * 60 - hours * 60 * 60 - days * 24 * 60 * 60;
 
-    format!("{days} days, {hours} hours, {minutes} minutes, {seconds} seconds")
+    let mut parts = vec![];
+
+    if days > 0 {
+        parts.push(pluralize!(days, "day"));
+    }
+
+    if hours > 0 {
+        parts.push(pluralize!(hours, "hour"));
+    }
+
+    if minutes > 0 {
+        parts.push(pluralize!(minutes, "minute"));
+    }
+
+    let seconds = pluralize!(seconds, "second");
+    match parts.len() {
+        0 => seconds,
+        1 => format!("{} and {seconds}", parts[0]),
+        _ => format!("{}, and {seconds}", parts.join(", ")),
+    }
+}
+
+fn get_last_sleep() -> String {
+    let last_sleep = LAST_SLEEP.expect("work");
+    get_sleep(last_sleep)
 }
 
 #[component]
 fn Application() -> impl IntoView {
     let time = RwSignal::new(String::new());
-    time.update(|v| *v = get_sleep());
+
+    time.update(|v| *v = get_last_sleep());
 
     {
         let time = time.clone();
@@ -39,7 +75,7 @@ fn Application() -> impl IntoView {
             }
 
             set_interval_with_handle(
-                move || time.update(|v| *v = get_sleep()),
+                move || time.update(|v| *v = get_last_sleep()),
                 Duration::from_secs(1),
             )
             .expect("valid interval")
@@ -61,13 +97,11 @@ fn Application() -> impl IntoView {
             </div>
             <div id="footer">
                 <p>
-                    "Site made with
-                    "<a href="https://www.rust-lang.org/" target="_blank" rel="noopener noreferrer">"Rust"</a>
-                    " via "
-                    <a href="https://leptos.dev/" target="_blank" rel="noopener noreferrer">"Leptos"</a>" with love in like 20 minutes "
-                    <a href="https://github.com/Pyreko/jdonmysnore" target="_blank" rel="noopener noreferrer">"(GitHub)"</a>"."
+                    "Site source can be found "
+                    <a href="https://github.com/Pyreko/jdonmysnore" target="_blank" rel="noopener noreferrer">"on GitHub"</a>
+                    "."
                 </p>
-                <p>"Please note that this is all meant in good fun! ❤️"</p>
+                <p>"This is all just meant in good fun! ❤️"</p>
             </div>
         </div>
     }
