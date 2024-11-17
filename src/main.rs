@@ -6,9 +6,6 @@ use leptos::{
     IntoView, RwSignal, SignalUpdate,
 };
 
-const LAST_OVERSLEEP_UNIX: i64 = 1730164881;
-const LAST_SLEEP: Option<DateTime<Utc>> = DateTime::from_timestamp(LAST_OVERSLEEP_UNIX, 0);
-
 fn main() {
     leptos::mount_to_body(|| view! { <Application/> })
 }
@@ -27,6 +24,7 @@ macro_rules! pluralize {
 
 fn get_sleep(last_sleep: DateTime<Utc>) -> String {
     let now = Local::now().to_utc();
+    println!("{now:?}, last_sleep: {last_sleep:?}");
 
     let diff = now.signed_duration_since(last_sleep);
     let days = diff.num_days();
@@ -57,7 +55,10 @@ fn get_sleep(last_sleep: DateTime<Utc>) -> String {
 }
 
 fn get_last_sleep() -> String {
-    let last_sleep = LAST_SLEEP.expect("work");
+    let last_sleep = DateTime::parse_from_rfc3339("2024-11-17T01:22:00Z")
+        .expect("valid time")
+        .to_utc();
+
     get_sleep(last_sleep)
 }
 
